@@ -1,0 +1,173 @@
+Imagine that you're writing software for a credit card provider. Your task is to implement a program that will add new credit card accounts,
+ process charges and credits against them, and display summary information.
+
+You are given a list of commands:
+
+Add <card_holder> <card_number> $<limit>: Add command will create a new credit card for the given card_holder, card_number, and limit. 
+It is guaranteed that the given card_holder didn't have a credit card before this operation.
+Card numbers should be validated using the Luhn 10 algorithm.
+
+New cards start with a $0 balance.
+
+Charge <card_holder> $<amount>: Charge command will increase the balance of the card associated with the provided name by the amount 
+specified.
+
+Charges that would raise the balance over the limit are ignored as if they were declined.
+Charges against Luhn 10 invalid cards are ignored.
+
+Credit <card_holder> $<amount>: Credit command will decrease the balance of the card associated with the provided name by the amount 
+specified.
+
+Credits that would drop the balance below $0 will create a negative balance.
+Credits against Luhn 10 invalid cards are ignored.
+
+How the Luhn algorithm works:
+
+Starting with the rightmost digit, which is the check digit, and moving left, double the value of every second digit. 
+If the result of this doubling operation is greater than 9 (e.g., 8 * 2 = 16), then add the digits of the product 
+(e.g., 16: 1 + 6 = 7, 18: 1 + 8 = 9).
+
+Take the sum of all the digits.
+If the total modulo 10 is equal to 0 (if the total ends in zero) then the number is valid according to the Luhn algorithm, 
+otherwise it is not valid.
+
+
+Luhn(number) = 7 + 9 + 9 + 4 + 7 + 6 + 9 + 7 + 7 = 65 = 5 (mod 10) != 0
+
+Return the card holder names with the balance of the card associated with the provided name. Display "error" instead of the balance 
+if the credit card number does not pass Luhn 10. The names in output should be displayed in lexicographical order.
+
+Example
+
+For
+
+operations = [["Add", "Tom", "4111111111111111", "$1000"],
+              ["Add", "Lisa", "5454545454545454", "$3000"],
+              ["Add", "Quincy", "1234567890123456", "$2000"],
+              ["Charge", "Tom", "$500"],
+              ["Charge", "Tom", "$800"],
+              ["Charge", "Lisa", "$7"],
+              ["Credit", "Lisa", "$100"],
+              ["Credit", "Quincy", "$200"]]
+the output should be
+
+solution(operations) = [["Lisa", "$-93"], ["Quincy", "error"], ["Tom", "$500"]]
+Input/Output
+
+[execution time limit] 4 seconds (js)
+
+[input] array.array.string operations
+
+An array of operations. It is guaranteed that card limits and amounts of each operation are in the range [1, 3000]. 
+It is also guaranteed that each card holder name will contain no more than 10 symbols and each card number will contain from 
+12 to 16 digits.
+
+Guaranteed constraints:
+1 ≤ operations.length ≤ 10,
+3 ≤ operations[i].length ≤ 4.
+
+[output] array.array.string
+
+Array of card holders and their card balances.
+
+
+
+
+
+
+
+solution:
+
+
+function solution(operations) {
+    let x = [];
+    let limits = [];
+    operations.forEach((operation) => {
+        action = operation[0];
+        names = operation[1];
+      if (action === 'Add') {
+        cardnumber = validateCred(operation[2]);
+    if (cardnumber == false) {
+        x.push(new Array(names, "error"))
+    }else {
+        x.push(new Array(names, "$0"));
+        limits.push(new Array(names, operation[3]));
+    }
+    
+    
+        
+      } else if (action === 'Charge') {
+        valuecash = parseInt(operation[2].slice(1,));
+        limits.forEach(a =>{
+            if (a[0] == names) {
+                valuelimit = parseInt(a[1].slice(1,))
+            }
+        })
+
+        x.forEach(b => {
+            if (b[0] == names) {
+                if (parseInt(b[1].slice(1,)) + valuecash <= valuelimit) {
+                    b[1] = parseInt(b[1].slice(1,)) + valuecash;
+                    b[1] = "$" + b[1].toString()
+            }
+                }
+                
+        });
+        
+      } else if (action === 'Credit') {
+        valuecash = parseInt(operation[2].slice(1,));
+        x.forEach(b => {
+            if (b[0] == names) {
+                if (parseInt(b[1].slice(1,)) - valuecash) {
+                    b[1] = parseInt(b[1].slice(1,)) - valuecash;
+                    b[1] = "$" + b[1].toString()
+            }
+                }
+                
+        });
+      } else {
+        console.log("Something went wrong");
+      }
+    });
+    x=x.sort();
+    return x
+}
+const validateCred=(arr)=>{
+    arr = arr.split("");
+
+    arr = arr.map((val)=>{
+       return parseInt(val)
+    })
+
+    arr.reverse();
+    let num=0;
+    let total=0;
+    for(let i=0; i<arr.length; i++){
+      if(i%2==1){
+        num=arr[i]*2;
+        if(num>9){
+          num=num-9;
+        }
+      }else{
+        num=arr[i];
+      }
+      total=total+num;
+  
+    }
+    if(total%10==0){
+      return true;
+    }
+    else{
+      return false;
+    }
+
+  }
+
+console.log(solution([["Add", "Tom", "4111111111111111", "$1000"],
+              ["Add", "Lisa", "5454545454545454", "$3000"],
+              ["Add", "Quincy", "1234567890123456", "$2000"],
+              ["Charge", "Tom", "$500"],
+              ["Charge", "Tom", "$800"],
+              ["Charge", "Lisa", "$7"],
+              ["Credit", "Lisa", "$100"],
+              ["Credit", "Quincy", "$200"]]));

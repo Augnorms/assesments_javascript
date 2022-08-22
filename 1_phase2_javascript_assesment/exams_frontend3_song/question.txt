@@ -1,0 +1,15 @@
+You are given an HTML template that manages a list of songs, but it's not fully working yet!
+
+The interface should allow the user to enter a song name which is then added to the list below upon clicking the Add Song button. 
+Each song in the list has a Delete button, which should remove it from the list.
+
+Most of the code is already written, but your task is to write the following 2 functions:
+
+A deleteSong(song) function called by clicking the Delete button on any of the songs in the list.
+
+An addSong() function called by clicking the Add Song button, which takes the value from the text input and adds this title 
+to the list of songs cleaning the field at the end of the operation.
+
+Note, that HTML and CSS is already implemented for you, and you only need to implement missing functions in main.js file.
+
+[execution time limit] 10 seconds

@@ -1,0 +1,213 @@
+Implement the missing code, denoted by ellipses. You may not modify the pre-existing code.
+Usernames consist of an alphabetic name (e.g. "alex") concatenated with some positive number (so "alex1", "alex2", etc. are valid usernames).
+
+Create a class called Generator that supports two operations - create(name) and delete(username). 
+The former should reserve the first available username and return it, while the latter should release that username back into the pool.
+
+The input for this task is an array of sequential queries, where a query of type "create <name>" means a call to Generator.create(<name>), 
+and query of type "delete <username>" means a call Generator.delete(<username>). The output should be an array of return values of all 
+create calls. There is already a prewritten piece of code that handles the input/output and makes create/delete calls, so you just need 
+to create the Generator class that implements them.
+
+Note that deleting a non-created username is a valid operation.
+
+Example
+
+For queries = ["create alex", "create alex", "delete alex1", "create alex", "create john"], the output should be
+solution(queries) = ["alex1", "alex2", "alex1", "john1"].
+That's how it should work:
+
+>> var Generator = new Generator();
+ 
+>> Generator.create('alex');
+"alex1"
+ 
+>> Generator.create('alex');
+"alex2"
+ 
+>> Generator.delete('alex1');
+ 
+>> Generator.create('alex');
+"alex1"
+ 
+>> Generator.create('john');
+"john1"
+Input/Output
+
+[execution time limit] 4 seconds (js)
+
+[input] array.string queries
+
+An array of queries to the Generator. queries[i] = "create <name>" means that you should call Generator.create(<name>)
+ and return the reserved username, and queries[i] = "delete <username>" means that you should call Generator.delete(<username>) 
+and return nothing. It is guaranteed that all server numbers of the deleting queries won't exceed 1000.
+
+Guaranteed constraints:
+1 ≤ queries.length ≤ 103.
+
+[output] array.string
+
+An array of answers from the Generator.
+
+[JavaScript] Syntax Tips
+
+
+
+
+
+
+function solution(queries) {
+  const generator = new Generator();
+  const results = [];
+  queries.forEach((query) => {
+    const [action, name] = query.split(' ');
+    if (action === 'create') {
+      results.push(generator.create(name));
+    } else if (action === 'delete') {
+      generator.delete(name);
+    }
+  });
+  return results;
+}
+
+
+
+
+
+
+solution 1:
+
+
+
+class Generator {
+    reservedList = [];
+    
+      create(name){
+        const sameTypeList = this.reservedList.filter((myName) =>
+            myName.slice(0, name.length) === name);
+        if(sameTypeList.length === 0){
+            this.reservedList = [...this.reservedList, name + 1];
+            return name + 1;
+        } else {
+            const existedNumberList = sameTypeList.map((myName) => {
+                return parseInt(myName.slice(name.length, myName.length), 10)
+            });
+            
+            const allNumberSeries = [...Array(existedNumberList[existedNumberList.length-1])].map((_, idx) => {
+                if(existedNumberList.includes(idx)) return idx;
+                return null;
+            })
+            
+            for(let i = 0; i < allNumberSeries.length - 1; i++){
+                if(allNumberSeries[i + 1] - allNumberSeries[i] !== 1){
+                    this.reservedList = [...this.reservedList, `${name}${i + 1}`]; 
+                    return `${name}${i + 1}`;
+                }
+            }
+            this.reservedList = [...this.reservedList, `${name}${allNumberSeries.length + 1}` ];
+            return `${name}${allNumberSeries.length + 1}`;
+        }
+    }
+    delete(name) {
+        return this.reservedList = this.reservedList.splice(this.reservedList.indexOf(name), 1);
+    }
+}
+
+
+function solution(queries) {
+  const generator = new Generator();
+  const results = [];
+  queries.forEach((query) => {
+    const [action, name] = query.split(' ');
+    if (action === 'create') {
+      results.push(generator.create(name));
+    } else if (action === 'delete') {
+      generator.delete(name);
+    }
+  });
+  return results;
+}
+
+
+console.log(solution(["create alex", "create alex", "delete alex1",
+  "create alex", "create john"]));
+
+
+
+
+solution 2:
+
+
+class Generator {
+  constructor() {
+    this.names = "";
+    this.arr = [];
+    this.arr2 = [];
+    this.counter = 1;
+  }
+  create(name) {
+    let n = this.arr2.find((ele) => ele.name === name);
+    if (n) {
+      n.counter += 1;
+    } else {
+      this.arr2.push({ name: name, counter: 1 });
+    }
+
+    let name1 = this.arr2.find((ele) => ele.name === name);
+    name = name.concat(name1.counter);
+    console.log("Ok tryind to create " + name + " at counter " + name1.counter);
+    this.arr.forEach((ele) => {
+      if (ele === name) {
+        console.log("OK " + name, "is avalable counter", name1.counter);
+        this.counter = parseInt(name[name.length - 1]) + 1;
+        name = name.substring(0, name.length - 1);
+        name = name.concat(this.counter);
+      }
+    });
+   
+
+    this.arr.push(name);
+    console.log("created", name);
+    return (this.names = name); //.concat(name1.counter)
+  }
+  delete(name) {
+    let m = name;
+    if (this.arr.indexOf(name) !== -1) {
+      this.arr.splice(this.arr.indexOf(name), 1);
+
+      name = name.substring(0, name.length - 1);
+      let name1 = this.arr2.find((ele) => ele.name === name);
+      let num = name1.counter;
+      name1.counter = 0;
+      this.counter = 1;
+      console.log(
+        "deleted",
+        m + "at counter " + num + " and counter becomes",
+        name1.counter
+      );
+      console.log(this.arr2);
+    }
+
+    return this.arr;
+  }
+}
+
+
+function solution(queries) {
+  const generator = new Generator();
+  const results = [];
+  queries.forEach((query) => {
+    const [action, name] = query.split(' ');
+    if (action === 'create') {
+      results.push(generator.create(name));
+    } else if (action === 'delete') {
+      generator.delete(name);
+    }
+  });
+  return results;
+}
+
+console.log(solution(["create alex", "create alex", "delete alex1",
+  "create alex", "create john"]));
+
+

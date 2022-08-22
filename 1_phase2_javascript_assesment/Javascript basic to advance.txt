@@ -1,0 +1,214 @@
+1. There is a street with of a given length and a taxi which initially is staying at position 0. The taxi driver takes orders if and 
+only if the starting and ending positions are in the range [0, length].
+
+Your task is to implement the function orderingTaxi(length) which should return a function. The returned function can be called 
+with the arguments startPos and endPos - the start and end positions of the trip respectively. The result of the function should 
+be the amount of money the passenger spent for the trip. The money for the trip is calculated in the following way:
+
+if the total length the driver went through to make the trip is less than or equal than 5, the passenger should pay 100 for every 
+length unit of the trip.
+if the total length the driver went through to make the trip is in the range (5, 10], the passenger should pay 150 for every length 
+unit of the trip.
+if the total length the driver went through to make the trip is greater than 10, the passenger should pay 200 for every length unit 
+of the trip.
+Note: If the driver ends his trip at position x and gets a new order from startPos to endPos, his trip is starting at the position 
+x, that is he should go from the position x to startPos, and then from startPos to endPos.
+
+An example of interaction is as follows:
+
+const requestOrder = orderingTaxi(20);
+requestOrder(0, 3); // the total length the driver went through to make a trip is 3, so the passenger should pay 300.
+requestOrder(6, 9); // the total length the driver went through to make a trip is 6, so the passenger should pay 900.
+requestOrder(12, 0); // the total length the passenger should pay 3000.
+
+soln
+
+function orderingTaxi(length) {
+    // TODO: complete the function
+     let driverPos = 0;
+     
+    function computeFare(startPos, endPos){
+        var total = Math.abs(driverPos-startPos) + Math.abs(endPos-startPos);
+        driverPos = endPos;
+        if(total<=5){
+            return total*100;
+        }else if(total>5 && total<=10){
+            return total*150;
+        }else{
+            return total*200;
+        }
+    }
+
+    return computeFare;
+}
+
+
+
+
+
+
+
+
+2.  You are given two functions, getUser and activateUser. Both of these functions use callbacks - getUser takes callback(error, response) 
+as a parameter, and activateUser takes data and callback(error, response) as parameters.
+
+Your task is to define a corresponding set of asynchronous functions that return a Promise as a result:
+
+getUserPromise accepts the getUser callback and returns a Promise with data (the output of the original getUser function). If the callback 
+execution ended up with an error, the resulting promise should also be rejected with this error.
+activateUserPromise accepts the data returned by getUser and the activateUser callback, and returns a Promise with the processed data 
+(the result from the activateUser function). If the callback execution ended up with an error, the resulting promise should also be rejected with this error.
+getAndActivateUser accepts callbacks getUser and activateUser, and returns a Promise with the activated retrieved user data. If either 
+callback execution ended up with an error, the resulting promise should also be rejected with this error.
+Example
+
+const getUser = function(callback) {
+  setTimeout(callback(undefined, 'user data has been successfully received'), 300);
+};
+
+const activateUser = function(data, callback) => {
+  callback(undefined, data + ', the user has been properly activated');
+};
+
+const promise = getAndActivateUser(getUser, activateUser);
+promise.then(value => console.log(value));
+
+
+should print user data has been successfully received, the user has been properly activated to the console.
+
+
+
+const getUser = function(callback) {
+  setTimeout(callback(undefined, 'user data has been successfully received'), 300);
+};
+and
+
+const activateUser = function(data, callback) => {
+  callback(undefined, data + ', the user has been properly activated');
+};
+the code
+
+const promise = getAndActivateUser(getUser, activateUser);
+promise.then(value => console.log(value));
+should print user data has been successfully received, the user has been properly activated to the console.
+
+
+soln
+
+function getUserPromise(getUser) {
+  // TODO: complete the function
+}
+
+function activateUserPromise(activateUser, data) {
+  // TODO: complete the function
+}
+
+function getAndActivateUser(getUser, activateUser) {
+  // TODO: complete the function
+}
+
+
+
+3. Implement the missing code, denoted by ellipses. You may not modify the pre-existing code.
+You are given a file with three methods implemented:
+
+getA() - synchronous;
+getB(callback) - callback driven;
+getC() - promised based.
+All methods resolve into some strings.
+
+Your task is to implement getABC which returns a promise aggregating each function's result, like [<result of getA>, <result of getB>, <result of getC>].
+
+
+
+soln
+
+const fs = require('fs');
+
+const [A, B, C] = JSON.parse(fs.readFileSync('input'));
+
+function getA() {
+  return A;
+}
+
+function getB(callback) {
+  setTimeout(() => {
+      callback(B);
+  }, 10);
+}
+
+function getC() {
+  return Promise.resolve().then(() => C);
+}
+
+function getABC() {
+   const obj = {};
+  const cb = (b) => obj.b = b;
+ 
+  getB(cb);
+
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve(getC().then(c => [getA(), obj.b, c])), 10);
+  });
+}
+
+getABC().then((arr) => console.log(arr));
+
+
+
+4.Farmer John has a white fence in his garden, and he wants to teach his grandchild to calculate. Every day he paints some 
+segment of the fence black and asks the grandchild to calculate the total length of the remaining white pieces. We want you to
+ help the grandchild by writing a program to automate the calculation.
+
+Your task is to implement the function colorFence(length), where length is the total length of the fence. This function should 
+return another function which can be called with arguments left and right, where 0 ≤ left ≤ right < length. The returned function 
+colors the segment of the fence from left to right (inclusive) into the black color, and returns the remaining total length of the white fence.
+
+An example of interaction is as follows:
+
+const colorIntervals = colorFence(20);
+colorIntervals(18, 18); // the remaining length of the white fence is 19.
+colorIntervals(0, 3); // the remaining length of the white fence is 15.
+colorIntervals(17, 19); // the remaining length of the white fence is 13 (since segment 18 was already painted).
+colorIntervals(0, 19); // the remaining length of the white fence is 0.
+
+
+soln
+
+function colorFence(length) {
+    // TODO: complete the function
+}
+
+
+
+
+5. You have a client service which loads resources from a remote place, but you want to optimize it and decided to cache the results. 
+Your task is to implement a class for caching the results of the loaded resources.
+
+You are given the ResourceManager class with load() - an asynchronous method for loading data (it returns a Promise).
+
+Your task is to implement the CachingResourceManager class. It takes a ResourceManager instance in its constructor as a dependency and 
+should implement two methods:
+
+get(id) - an async method that takes an id and returns a Promise with the resource. The resource must be returned directly from cache or 
+loaded using ResourceManager (first trying to check in cache, then calling resource manager if not found in cache);
+invalidateCache() - a synchronous method that should immediately invalidate all cache values. If some load functions are being processed, 
+their results shouldn't be placed in cache (for more information, check the examples in the file asyncTests.js).
+
+
+soln
+
+class CachingResourceManager {
+  constructor(manager) {
+    // TODO: implement this method
+  }
+
+  async get(id) {
+    // TODO: implement this method
+    return 0;
+  }
+
+  invalidateCache() {
+    // TODO: implement this method
+  }
+}

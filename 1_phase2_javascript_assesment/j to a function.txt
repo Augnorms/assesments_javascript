@@ -1,0 +1,52 @@
+function solution(listA, listB) {
+    
+    let sum = 0;
+    
+    for(let i=0; i<listA.length; i++){
+        sum += listA[i] * listB[i];
+    }
+    return sum;
+
+}
+
+
+
+function solution(base, exp) {
+  
+  let result = base;
+  
+  while(exp > 1){
+      result = result * base;
+      exp = exp - 1;
+  }
+  
+  if(exp == 0){
+      return 1;
+  }else{
+      return result;
+  }
+  
+}
+
+
+function solution(word1, word2) {
+    
+    let length1 = word1.length;
+    let length2 = word2.length;
+    
+    if(length1 === length2){
+        return true;
+    }else{
+        return false;
+    }
+    
+    let str1 = a.split('').sort().join('');
+    let str2 = b.split('').sort().join('');
+    
+    if(str1 === str2){
+        return true;
+    }else{
+        return false;
+    }
+
+}

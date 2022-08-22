@@ -1,0 +1,29 @@
+Implement the missing code, denoted by ellipses. You may not modify the pre-existing code.
+You are developing an application for the library book management using vanilla JS.
+
+On the preview page you can see the following elements:
+
+The form for adding new books with one input field for the book title.
+List of added books with "Delete" buttons.
+Acceptance Criteria
+
+Scenario: Submitting filled form
+  Given The form is not emtpy
+   When The "Add Book" button is clicked
+   Then The book is added to the end of the list
+   And The form input field is cleared
+
+Scenario: Submitting empty form
+  Given The form is empty
+   When The "Add Book" button is clicked
+   Then Form input field stays as is 
+   And The book is not added to the list 
+
+Scenario: Deleting one of the books
+  Given Books list is not empty 
+   When "Delete" button is clicked for one of the books
+   Then This book is removed from the list
+Notes
+You can expand the test results to see a more detailed report.
+Please use the provided template, as the tests access the elements by using the CSS selectors. If you change the structure of the DOM elements, the tests will fail.
+[execution time limit] 10 seconds

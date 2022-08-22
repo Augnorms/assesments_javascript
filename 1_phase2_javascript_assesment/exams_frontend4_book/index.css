@@ -1,0 +1,68 @@
+.content-container {
+  margin: 20px;
+
+  h2 {
+    font-family: sans-serif;
+  }
+
+  .add-book-form {
+    margin-bottom: 30px;
+
+    .add-book-form__title-input {
+      width: 300px;
+      font-family: sans-serif;
+      border-radius: 5px;
+      border: 1px solid rgb(230, 230, 230);
+      text-shadow: none;
+      background: rgb(240, 240, 240);
+      padding: 5px;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .add-book-form__btn {
+      font-size: 14px;
+      color: white;
+      border-radius: 5px;
+      padding: 5px 20px;
+      border: 1px solid rgb(0, 74, 225);
+      background-color: rgb(0, 74, 225);
+      margin-left: 10px;
+
+      &:hover {
+        cursor: pointer;
+        background-color: rgb(0, 57, 174)
+      }
+    }
+  }
+
+  .book-list {
+    .book-list__item {
+      list-style: none;
+      font-family: sans-serif;
+      margin-bottom: 10px;
+      border: 1px solid rgb(230, 230, 230);
+      border-radius: 5px;
+      padding: 5px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 415px;
+    }
+
+    .book-list__delete-btn {
+      font-size: 14px;
+      color: white;
+      border-radius: 5px;
+      padding: 5px 20px;
+      border: 1px solid rgb(255, 101, 69);
+      background-color: rgb(255, 101, 69);
+      margin-left: 10px;
+    }
+
+    .book-list__delete-btn:hover {
+      cursor: pointer;
+      background-color: rgb(235, 81, 59);
+    }
+  }
+}

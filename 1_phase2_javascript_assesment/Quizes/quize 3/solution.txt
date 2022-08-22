@@ -1,0 +1,183 @@
+solutions:
+
+1. with the following given code, which of the following functions call return 100
+
+   const A = {
+	elem: 5
+};
+
+const B = {
+	elem: 10,
+	getElem(num){
+		return this.elem * num;
+	}
+};
+
+const getElem = B.getElem;
+const boundGetElem = getElem.bind(B);
+
+ 
+  ans: boundGetElem(10)
+
+
+
+2.  with the following code, which of the given options will run without an error
+
+   function sayHi(fullName, callback){
+	console.log(`Hi, ${fullName}!`);
+	if(typeof callback === 'function'){
+		callback();
+	}
+}
+
+function sayBye(fullName, callback){
+	console.log(`Bye, ${fullName}`);
+	callback();
+}
+
+function printMessage(firstName, lastName, callback){
+	const fullName = `${firstName} ${lastName}`;
+	if(typeof callback === 'function'){
+		callback(fullName);
+	}
+}
+  
+
+   ans:  printMessage('Mark', 'Newman', x=>console.log(x))
+         printMessage('Andrew', 'johnson', sayHi)
+
+
+3. what will this code print
+
+  const Pair = function(first, second){
+	this.first = first;
+	this.second = second;
+};
+
+Pair.prototype.setFirst = function(newFirst){
+	this.first = newFirst;
+	return this;
+};
+
+Pair.prototype.setSecond = function(newSecond){
+	this.second = newSecond;
+	return this;
+};
+
+const arr = [];
+arr[0] = new Pair("first", "second");
+arr[1] = arr[0].setFirst("second");
+arr[2] = arr[1].setSecond("first");
+if(arr[0] === arr[1] || arr[0] === arr[2] || arr[1] === arr[2]){
+	arr[0].setSecond("second").setFirst("first");
+}else{
+	arr[1].setFirst("third").setSecond("third");
+}
+
+console.log(arr[0].first);
+console.log(arr[0].second);
+
+
+  ans: first
+       second         
+
+
+4. what will this code print:
+
+function math(operation, x){
+	const OPERATION = {
+		'*':(a, b) => a * b,
+		'/':(a, b) => a / b,
+		'+':(a, b) => a + b,
+		'-':(a, b) => a - b,
+	}
+
+	return function(y){
+		return OPERATION[operation](x, y);
+	}
+}
+
+const mul = math("*", 5);
+const add = math("+", mul(2));
+
+console.log(typeof add);
+console.log(add(math("-", 25)(20)));
+
+
+ans:  function
+      15
+
+
+5. with the given code, what will be the value of qux?
+
+
+  function Foo(bar){
+	this.a = bar;
+	this.b = new Array(bar[0], bar[1], bar[2]);
+}
+
+const bar = [10, 10, 10];
+const zzz = new Foo(bar);
+
+bar[0] = 100;
+bar[3] = 100;
+
+const qux = bar[0] + zzz.a[3] + zzz.b[0];
+
+console.log(qux);
+
+
+  ans: 210
+
+
+
+6. what will this code print
+
+  printNum(150);
+
+function printNum(){
+	console.log(num)
+	var num = 5;
+}
+
+  ans: undefined
+
+
+7. what will this code print
+
+class Guitar{
+	constructor(color, stringNumber){
+		this.color = color;
+		this.stringNumber = stringNumber;
+		this.play = () => console.log('guitar');
+	}
+}
+
+class Bass extends Guitar{
+	constructor(color){
+		super(color, 4);
+		this.play = () => console.log("bass");
+	}
+}
+
+class Electric extends Guitar{
+	constructor(color){
+		super(color, 6);
+	}
+}
+
+Electric.prototype.play = () => console.log("electric");
+
+const guitars = [];
+
+guitars[0] = new Guitar("black");
+guitars[1] = new Bass("green");
+guitars[2] = new Electric("red");
+
+for(let i=0; i < 3; i++){
+	guitars[i].play();
+}
+
+  ans:  guitar
+        bass
+        guitar  

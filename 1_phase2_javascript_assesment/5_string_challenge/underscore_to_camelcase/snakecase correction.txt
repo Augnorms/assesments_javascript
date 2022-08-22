@@ -1,0 +1,11 @@
+function solution(str) {
+  let regex1 = /(?<=[a-z]_)\w/g;
+  let regex2 = /(?<=[a-z])_(?=[A-Z])/ig;
+  str = str.replace(regex1, function (x) {return x.toUpperCase();});
+  console.log(str.replace(regex2,""));
+}
+
+
+
+
+solution("the_variable__");
